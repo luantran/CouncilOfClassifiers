@@ -1,3 +1,5 @@
+import math
+
 import numpy as np
 from collections import Counter
 import logging
@@ -78,21 +80,33 @@ class CEFRClassifier:
         vote_counts = Counter(votes)
         majority_vote = vote_counts.most_common(1)[0][0]
         confidence = vote_counts.most_common(1)[0][1] / len(self.models)
+        agreement_count = vote_counts.most_common(1)[0][1]
+        threshold = math.ceil(len(self.models) / 2)
+
+        use_majority_vote = agreement_count >= threshold
+
+
+        mean_pred = int(np.argmax(mean_probs))
+        mean_pred_proba = float(np.max(mean_probs))
 
         logger.debug(f"Vote counts: {dict(vote_counts)}")
         logger.debug(f"Majority vote: {majority_vote} with confidence {confidence:.2f}")
+        logger.debug(f"Mean probabilities predictions: {mean_pred}")
 
         # Return aggregated results
         result = {
             'text': text,
             'predictions': predictions,
             'probabilities': probabilities,
+            'use_majority_vote': use_majority_vote,
             'mean_probabilities': mean_probs.tolist(),
+            'mean_pred': mean_pred,
+            'mean_pred_proba': mean_pred_proba,
             'majority_vote': majority_vote,
             'confidence': confidence,
             'stats': {
                 'num_models': len(self.models),
-                'agreement_count': vote_counts.most_common(1)[0][1],
+                'agreement_count': agreement_count,
                 'all_agree': len(vote_counts) == 1
             }
         }

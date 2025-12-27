@@ -283,3 +283,71 @@ button:disabled {
         grid-template-columns: 1fr;
     }
 }
+
+.agree-badge.high { background-color: #4caf50; color: white; }
+.agree-badge.medium { background-color: #ff9800; color: white; }
+.agree-badge.low { background-color: #f44336; color: white; }
+
+.results-two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.results-two-column h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    color: #374151;
+}
+
+@media (max-width: 768px) {
+    .results-two-column {
+        grid-template-columns: 1fr;
+    }
+}
+
+.prob-row-indiv {
+    margin-bottom: 0.5rem;
+}
+
+.prob-bar-container-indiv {
+    position: relative;
+    height: 28px;
+    background-color: #f3f4f6;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.prob-label-indiv {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #374151;
+    z-index: 2;
+    min-width: 50px;
+}
+
+.prob-bar-indiv {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    transition: width 0.3s ease;
+    z-index: 1;
+}
+
+.prob-value-indiv {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #374151;
+    z-index: 2;
+}

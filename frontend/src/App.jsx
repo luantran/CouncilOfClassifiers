@@ -51,14 +51,14 @@ function App() {
             {/* Input Form */}
             <div className="input-section">
                 <form onSubmit={handleSubmit}>
-          <textarea
-              name="text"
-              rows="6"
-              placeholder="Enter your text here..."
-              required
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-          />
+            <textarea
+                  name="text"
+                  rows="6"
+                  placeholder="Enter your text here..."
+                  required
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
+            />
                     <button type="submit" disabled={loading}>
                         {loading ? 'Getting Prediction...' : 'Get Prediction'}
                     </button>
@@ -71,29 +71,67 @@ function App() {
                     {/* Ensemble Summary */}
                     <div className="result-card highlight">
                         <h2>Results</h2>
-                        <div className="ensemble-summary">
-                            <div className="result-item">
-                                <span className="label">Majority Vote:</span>
-                                <span className="value">
-                  <span className="class-badge">
-                    {CLASSES[result.majority_vote]}
-                  </span>
-                </span>
+                        <div className="results-two-column">
+                            {/* Majority Vote Column */}
+                            <div className="ensemble-summary">
+                                <h3>Majority Vote</h3>
+                                <div className="result-item">
+                                    <span className="label">Predicted Level</span>
+                                    <span className="value">
+                                        <span className="class-badge">
+                                            {CLASSES[result.majority_vote]}
+                                        </span>
+                                    </span>
+                                </div>
+                                <div className="result-item">
+                                    <span className="label">Confidence</span>
+                                    <span className="value">
+                                        {Math.round(result.confidence * 100)}%
+                                    </span>
+                                </div>
+                                <div className="result-item">
+                                    <span className="label">Agreement</span>
+                                    <span className="value">
+                                        {result.stats.agreement_count}/{result.stats.num_models} models
+                                        {result.stats.all_agree && (
+                                            <span className="agree-badge">✓ Unanimous</span>
+                                        )}
+                                    </span>
+                                </div>
                             </div>
-                            <div className="result-item">
-                                <span className="label">Confidence:</span>
-                                <span className="value">
-                  {Math.round(result.confidence * 100)}%
-                </span>
-                            </div>
-                            <div className="result-item">
-                                <span className="label">Agreement:</span>
-                                <span className="value">
-                  {result.stats.agreement_count}/{result.stats.num_models} models
-                                    {result.stats.all_agree && (
-                                        <span className="agree-badge">✓ Unanimous</span>
-                                    )}
-                </span>
+
+                            {/* Mean Probabilities Column */}
+                            <div className="ensemble-summary">
+                                <h3>Mean Probabilities</h3>
+                                <div className="result-item">
+                                    <span className="label">Predicted Level</span>
+                                    <span className="value">
+                                        <span className="class-badge">
+                                            {CLASSES[result.mean_pred]}
+                                        </span>
+                                    </span>
+                                </div>
+                                <div className="result-item">
+                                    <span className="label">Probability</span>
+                                    <span className="value">
+                                        {Math.round(result.mean_pred_proba * 100)}%
+                                            <span
+                                                className={`agree-badge ${
+                                                    result.mean_pred_proba >= 0.90
+                                                        ? "high"
+                                                        : result.mean_pred_proba >= 0.70
+                                                            ? "medium"
+                                                            : "low"
+                                                }`}
+                                            >
+                                                {result.mean_pred_proba >= 0.90
+                                                    ? "High Confidence"
+                                                    : result.mean_pred_proba >= 0.70
+                                                        ? "Confident"
+                                                        : "Low Confidence"}
+                                            </span>
+                                        </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -118,8 +156,6 @@ function App() {
                             ))}
                         </div>
                     </div>
-
-                    {/* Individual Model Predictions */}
                     <div className="result-card">
                         <h3>Individual Model Predictions</h3>
                         <div className="models-grid">
@@ -131,9 +167,17 @@ function App() {
                                     </div>
                                     <div className="model-probs">
                                         {result.probabilities[modelName].map((prob, idx) => (
-                                            <div key={idx} className="mini-prob">
-                                                <span>{CLASSES[idx]}:</span>
-                                                <span>{(prob * 100).toFixed(1)}%</span>
+                                            <div key={idx} className="prob-row-indiv">
+                                                <div className="prob-bar-container-indiv">
+                                                    <span className="prob-label-indiv">{CLASSES[idx]}</span>
+                                                    <div
+                                                        className="prob-bar-indiv"
+                                                        style={{width: `${prob * 100}%`}}
+                                                    />
+                                                    <span className="prob-value-indiv">
+                                                        {(prob * 100).toFixed(1)}%
+                                                    </span>
+                                                </div>
                                             </div>
                                         ))}
                                     </div>
