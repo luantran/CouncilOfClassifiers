@@ -2,8 +2,12 @@ services:
   - type: web
     name: council-of-classifiers
     runtime: python
-    region: virginia  # Change to your preferred region: oregon, frankfurt, singapore, etc.
-    plan: starter  # Options: free, starter, standard, pro, etc.
+    region: virginia
+    plan: starter
+
+    domains:
+      - cefr-grader.com
+      - www.cefr-grader.com
 
     # Build command - install dependencies and build frontend
     buildCommand: |
@@ -13,10 +17,8 @@ services:
       npm run build
       cd ..
 
-    # Start command - run Flask in production mode
     startCommand: python run.py
 
-    # Environment variables
     envVars:
       - key: FLASK_ENV
         value: production
@@ -31,14 +33,11 @@ services:
       # - key: HF_TOKEN
       #   sync: false  # Set this manually in Render dashboard
 
-    # Auto-deploy on push to main branch
     autoDeploy: true
 
-    # Health check endpoint
     healthCheckPath: /api/health
 
-    # Disk for caching models
     disk:
       name: model-cache
       mountPath: /opt/render/project/server/hf_models
-      sizeGB: 2  # Adjust based on model sizes (free tier allows up to 1GB)
+      sizeGB: 2
