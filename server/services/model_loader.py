@@ -168,10 +168,18 @@ class ModelLoader:
 
     def _load_bert_model(self, model_id: str = "theluantran/cefr-bert-classifier" ):
         logger.debug(f"Loading BERT model from HuggingFace {model_id}")
-
+        current_dir = Path(__file__).resolve().parent
+        root_dir = current_dir.parent
+        local_dir = os.path.join(root_dir, MODEL_CACHE_DIR, 'bert')
         try:
-            self.bert_tokenizer = AutoTokenizer.from_pretrained(model_id)
-            self.bert_model = AutoModelForSequenceClassification.from_pretrained(model_id)
+            self.bert_tokenizer = AutoTokenizer.from_pretrained(
+                model_id,
+                cache_dir=local_dir
+            )
+            self.bert_model = AutoModelForSequenceClassification.from_pretrained(
+                model_id,
+                cache_dir = local_dir
+            )
             self.bert_model.eval()  # Set to evaluation mode
 
             logger.info(f"[OK] BERT model loaded successfully")

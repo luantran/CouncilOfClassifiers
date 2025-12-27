@@ -1,0 +1,44 @@
+services:
+  - type: web
+    name: council-of-classifiers
+    runtime: python
+    region: virginia  # Change to your preferred region: oregon, frankfurt, singapore, etc.
+    plan: starter  # Options: free, starter, standard, pro, etc.
+
+    # Build command - install dependencies and build frontend
+    buildCommand: |
+      pip install -r requirements.txt
+      cd frontend
+      npm install
+      npm run build
+      cd ..
+
+    # Start command - run Flask in production mode
+    startCommand: python run.py
+
+    # Environment variables
+    envVars:
+      - key: FLASK_ENV
+        value: production
+
+      - key: MODEL_CACHE_DIR
+        value: /opt/render/project/server/hf_models
+
+      - key: SECRET_KEY
+        generateValue: true  # Render will auto-generate a secure secret
+
+      # Optional: Add HuggingFace token if using private models
+      # - key: HF_TOKEN
+      #   sync: false  # Set this manually in Render dashboard
+
+    # Auto-deploy on push to main branch
+    autoDeploy: true
+
+    # Health check endpoint
+    healthCheckPath: /api/health
+
+    # Disk for caching models
+    disk:
+      name: model-cache
+      mountPath: /opt/render/project/server/hf_models
+      sizeGB: 2  # Adjust based on model sizes (free tier allows up to 1GB)
