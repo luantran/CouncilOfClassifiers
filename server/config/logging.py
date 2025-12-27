@@ -15,7 +15,7 @@ def setup_logging(app=None):
     log_level = os.environ.get('LOG_LEVEL', 'DEBUG').upper()
 
     # Create logs directory if it doesn't exist
-    log_dir = 'logs'
+    log_dir = 'server/logs'
     os.makedirs(log_dir, exist_ok=True)
 
     # Configure root logger
