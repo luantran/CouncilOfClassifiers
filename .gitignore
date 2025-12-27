@@ -1,0 +1,7 @@
+/server/models/
+/server/logs/
+/server/hf_models/
+/frontend/dist/
+/frontend/node_modules/
+/.venv/
+/.idea/
