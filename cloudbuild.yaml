@@ -14,7 +14,7 @@ steps:
       - 'push'
       - 'gcr.io/$PROJECT_ID/council-of-classifiers'
 
-  # Deploy to Cloud Run
+  # Deploy to Cloud Run with 8GB memory
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args:
@@ -29,12 +29,14 @@ steps:
       - 'managed'
       - '--allow-unauthenticated'
       - '--memory'
-      - '4Gi'
+      - '8Gi'                          # ← Changed from 4Gi
       - '--cpu'
-      - '2'
+      - '4'                            # ← Changed from 2
       - '--timeout'
       - '1200s'
       - '--cpu-boost'
+      - '--min-instances'
+      - '1'                            # ← Added to keep warm
       - '--port'
       - '8080'
       - '--set-env-vars'
