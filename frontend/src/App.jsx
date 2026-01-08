@@ -39,7 +39,7 @@ function App() {
     return (
         <div className="container">
             <header>
-                <h1>Council of Classifiers</h1>
+                <h1>Council of Classifiers 1</h1>
                 <p>Get predictions from 3 models with ensemble voting</p>
             </header>
 
