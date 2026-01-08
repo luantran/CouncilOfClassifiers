@@ -1,0 +1,52 @@
+steps:
+  # Build Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/council-of-classifiers'
+      - '.'
+    timeout: 1800s
+
+  # Push to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/council-of-classifiers'
+
+  # Deploy to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'council-of-classifiers'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/council-of-classifiers'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+      - '--memory'
+      - '4Gi'
+      - '--cpu'
+      - '2'
+      - '--timeout'
+      - '1200s'
+      - '--cpu-boost'
+      - '--port'
+      - '8080'
+      - '--set-env-vars'
+      - 'FLASK_ENV=production'
+      - '--update-secrets'
+      - 'HF_TOKEN=HF_TOKEN:latest'
+
+timeout: 2400s
+
+options:
+  machineType: 'N1_HIGHCPU_8'
+  logging: CLOUD_LOGGING_ONLY
+
+images:
+  - 'gcr.io/$PROJECT_ID/council-of-classifiers'

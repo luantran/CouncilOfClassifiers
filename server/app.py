@@ -1,11 +1,10 @@
 import os
+from flask import Flask
 
-from flask import Flask, render_template, request
-
-# Import and setup logging
-from config.logging import setup_logging
-from services.bert_service import BERTService
-from services.doc2vec_service import Doc2VecService
+# Use relative imports
+from .config.logging import setup_logging
+from .services.bert_service import BERTService
+from .services.doc2vec_service import Doc2VecService
 from flask_cors import CORS
 
 setup_logging()
@@ -13,15 +12,11 @@ setup_logging()
 import logging
 logger = logging.getLogger(__name__)
 
-from services.classifier import CEFRClassifier
-from services.model_loader import ModelLoader
-
-from routes.api_routes import api_bp
-from routes.web_routes import web_bp
-
-from services.nb_service import NaiveBayesService
-
-
+from .services.classifier import CEFRClassifier
+from .services.model_loader import ModelLoader
+from .routes.api_routes import api_bp
+from .routes.web_routes import web_bp
+from .services.nb_service import NaiveBayesService
 
 
 def create_app():
