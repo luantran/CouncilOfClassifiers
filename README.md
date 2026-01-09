@@ -13,7 +13,7 @@ A production-ready ensemble system for classifying English text by CEFR proficie
 - **Dual Prediction Methods**: Majority voting and mean probability aggregation
 - **Modern Web Interface**: React + Vite frontend with real-time classification
 - **REST API**: JSON endpoints for programmatic access
-- **Production Ready**: Deployed on Render with models hosted on HuggingFace Hub
+- **Production Ready**: Deployed on Google Cloud Run with models hosted on HuggingFace Hub
 
 ### Installation
 
