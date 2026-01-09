@@ -40,7 +40,22 @@ function App() {
         <div className="container">
             <header>
                 <h1>Council of Classifiers</h1>
-                <p>Get predictions from 3 models with ensemble voting</p>
+                <p className="subtitle">CEFR Text Classification Ensemble</p>
+                <div className="app-description">
+                    <p>
+                        This tool classifies English text by proficiency level using the Common European Framework of Reference (CEFR).
+                        Simply paste your text below and get predictions from three different machine learning models working together:
+                    </p>
+                    <ul>
+                        <li><strong>Naive Bayes</strong> with TF-IDF features</li>
+                        <li><strong>Doc2Vec</strong> with neural network classifier</li>
+                        <li><strong>Fine-tuned RoBERTa</strong> transformer model</li>
+                    </ul>
+                    <p>
+                        The ensemble combines all three predictions to give you both a <strong>majority vote</strong> result
+                        and <strong>averaged probabilities</strong> across all CEFR levels (A1, A2, B1, B2, C1/C2).
+                    </p>
+                </div>
             </header>
 
             {/* Flash Messages */}
